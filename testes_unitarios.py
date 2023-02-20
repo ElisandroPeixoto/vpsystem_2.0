@@ -5,12 +5,14 @@ from classes import Disjuntor
 
 class TestesFuncoes(unittest.TestCase):
 
-    # Funcao Calculo do Neutro
+    # ***** Funcao Calculo do Neutro *****
     def test_neutro_zero(self):
         "Retorna valor de neutro igual a zero"
         self.assertEqual(neutro([120, 0], [120, -120], [120, 120]), (0, 0))
 
-    # Abertura e Fechamento do Disjuntor
+    # ***************************************
+
+    # ***** Abertura e Fechamento do Disjuntor *****
     def test_disjuntor_fechar(self):
         "Fechamento do disjuntor"
         dj = Disjuntor([0, 0], [0, 0], [0, 0])
@@ -20,6 +22,8 @@ class TestesFuncoes(unittest.TestCase):
         "Abertura do Disjuntor"
         dj = Disjuntor([0, 0], [0, 0], [0, 0], True)
         self.assertFalse(dj.abrir())
+
+    # ***************************************
 
     # Rele 50 Fase
     def test_funcao_50(self):
@@ -32,6 +36,8 @@ class TestesFuncoes(unittest.TestCase):
         dj = Disjuntor([20, 0], [30, 0], [20, 0])
         self.assertFalse(dj.rele50(100))
 
+    # ***************************************
+
     # Rele 50 Neutro
     def test_funcao_50N(self):
         "Atuacao do 50 de Neutro"
@@ -42,6 +48,8 @@ class TestesFuncoes(unittest.TestCase):
         "Nao atuacao da funcao 50"
         dj = Disjuntor([0, 0], [0, 0], [1200, 0])
         self.assertFalse(dj.rele50N(1500))
+
+    # ***************************************
 
     # Rele 51 Fase
     def test_funcao_51(self):

@@ -1,29 +1,20 @@
 from funcoes import neutro
 
 
-class Disjuntor:
-    def __init__(self, corrente_ia, corrente_ib, corrente_ic, estado=False):
+class TransformadorCorrente:
+    def __init__(self, corrente_ia, corrente_ib, corrente_ic):
         self.__corrente_ia = corrente_ia
         self.__corrente_ib = corrente_ib
         self.__corrente_ic = corrente_ic
-        self.__corrente_in = neutro(corrente_ia, corrente_ib, corrente_ic)
-        self.__estado = estado
 
-    # Habilita acesso ao estado do disjuntor
-    @property
-    def estado(self):
-        "Abertura e fechamento do disjuntor"
-        return self.__estado
 
-    def abrir(self):
-        "Método de Abertura"
-        self.__estado = False
-        return self.__estado
-
-    def fechar(self):
-        "Método de Fechamento"
-        self.__estado = True
-        return self.__estado
+class ReleProtecao(TransformadorCorrente):
+    def __init__(self, corrente_ia, corrente_ib, corrente_ic):
+        super().__init__(corrente_ia, corrente_ib, corrente_ic)
+        self.__corrente_ia = corrente_ia
+        self.__corrente_ib = corrente_ib
+        self.__corrente_ic = corrente_ic
+        self.__corrente_in = neutro(self.__corrente_ia, self.__corrente_ib, self.__corrente_ic)
 
     def rele50(self, pickup):
         "Relé 50 de Fase"
@@ -60,3 +51,24 @@ class Disjuntor:
 
     def rele51N(self, norma, pickup, curva, dial):
         pass
+
+
+class Disjuntor(ReleProtecao):
+    def __init__(self, corrente_ia, corrente_ib, corrente_ic, estado=False):
+        ReleProtecao.__init__(self, corrente_ia, corrente_ib, corrente_ic)
+        self.__estado = estado
+
+    @property  # Habilita acesso ao estado do disjuntor
+    def estado(self):
+        "Abertura e fechamento do disjuntor"
+        return self.__estado
+
+    def abrir(self):
+        "Método de Abertura"
+        self.__estado = False
+        return self.__estado
+
+    def fechar(self):
+        "Método de Fechamento"
+        self.__estado = True
+        return self.__estado
