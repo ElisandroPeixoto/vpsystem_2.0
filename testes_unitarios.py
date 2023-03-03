@@ -1,5 +1,5 @@
 import unittest
-from funcoes import neutro
+from funcoes_protecao import neutro
 from classes import Disjuntor
 
 
@@ -55,9 +55,18 @@ class TestesFuncoes(unittest.TestCase):
     def test_funcao_51(self):
         "Tempo de atuacao correto"
         dj = Disjuntor([1000, 0], [300, -120], [2, 140])
-        tempo = dj.rele51('IEC', 100, 'SI', 0.05)
+        tempo = dj.rele51(100, 'SI', 0.05)
         if tempo is not None:
             self.assertAlmostEqual(float(tempo), 0.1485, delta=0.9)
+
+    def test_funcao_51n(self):
+        "Tempo de atuacao correto de Neutro"
+        dj = Disjuntor([1000, 0], [0, 0], [0, 0])
+        tempo = dj.rele51N(100, 'SI', 0.05)
+        if tempo is not None:
+            self.assertAlmostEqual(float(tempo), 0.1485, delta=0.9)
+        else:
+            self.fail()
 
 
 if __name__ == "__main__":

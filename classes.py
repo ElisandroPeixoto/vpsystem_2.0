@@ -1,4 +1,4 @@
-from funcoes import neutro
+from funcoes_protecao import neutro, sobrecorrente_temporizada_IEC
 
 
 class TransformadorCorrente:
@@ -14,7 +14,8 @@ class ReleProtecao(TransformadorCorrente):
         self.__corrente_ia = corrente_ia
         self.__corrente_ib = corrente_ib
         self.__corrente_ic = corrente_ic
-        self.__corrente_in = neutro(self.__corrente_ia, self.__corrente_ib, self.__corrente_ic)
+        self.__corrente_in = neutro(
+            self.__corrente_ia, self.__corrente_ib, self.__corrente_ic)
 
     def rele50(self, pickup):
         "Relé 50 de Fase"
@@ -30,27 +31,17 @@ class ReleProtecao(TransformadorCorrente):
         else:
             return False
 
-    def rele51(self, norma, pickup, curva, dial):
+    def rele51(self, pickup, curva, dial):
         if (self.__corrente_ia[0] or self.__corrente_ib[0] or self.__corrente_ic[0]) > pickup:
             icc = max(self.__corrente_ia[0],
                       self.__corrente_ib[0], self.__corrente_ic[0])
         else:
             icc = 0
+        return sobrecorrente_temporizada_IEC(icc, pickup, curva, dial)
 
-        if norma == "IEC":
-            M = icc/pickup
-            if curva == "SI":
-                tempo_disparo = dial*(0.14/((M**0.02)-1))
-                return tempo_disparo
-            elif curva == "VI":
-                tempo_disparo = dial*(13.5/(M - 1))
-                return tempo_disparo
-            elif curva == "EI":
-                tempo_disparo = dial*(80/((M**2)-1))
-                return tempo_disparo
-
-    def rele51N(self, norma, pickup, curva, dial):
-        pass
+    def rele51N(self, pickup, curva, dial):
+        icc = self.__corrente_in[0]
+        return sobrecorrente_temporizada_IEC(icc, pickup, curva, dial)
 
 
 class Disjuntor(ReleProtecao):
@@ -61,7 +52,10 @@ class Disjuntor(ReleProtecao):
     @property  # Habilita acesso ao estado do disjuntor
     def estado(self):
         "Abertura e fechamento do disjuntor"
-        return self.__estado
+        if self.__estado:
+            return "Fechado"
+        else:
+            return "Aberto"
 
     def abrir(self):
         "Método de Abertura"
