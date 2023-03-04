@@ -14,15 +14,15 @@ def neutro(ia, ib, ic):
 
 
 def sobrecorrente_temporizada_iec(corrente_falta, pickup, curva, dial):
-    M = corrente_falta/pickup
+    m = corrente_falta/pickup
     if curva == "SI":
-        tempo_disparo = dial*(0.14/((M**0.02)-1))
+        tempo_disparo = dial*(0.14/((m**0.02)-1))
         return tempo_disparo
     elif curva == "VI":
-        tempo_disparo = dial*(13.5/(M - 1))
+        tempo_disparo = dial*(13.5/(m - 1))
         return tempo_disparo
     elif curva == "EI":
-        tempo_disparo = dial*(80/((M**2)-1))
+        tempo_disparo = dial*(80/((m**2)-1))
         return tempo_disparo
 
 
