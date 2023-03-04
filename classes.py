@@ -1,4 +1,4 @@
-from funcoes_protecao import neutro, sobrecorrente_temporizada_IEC
+from funcoes_protecao import neutro, sobrecorrente_temporizada_iec
 
 
 class TransformadorCorrente:
@@ -18,14 +18,14 @@ class ReleProtecao(TransformadorCorrente):
             self.__corrente_ia, self.__corrente_ib, self.__corrente_ic)
 
     def rele50(self, pickup):
-        "Relé 50 de Fase"
+        """Relé 50 de Fase"""
         if (self.__corrente_ia[0] or self.__corrente_ib[0] or self.__corrente_ic[0]) > pickup:
             return True
         else:
             return False
 
-    def rele50N(self, pickup):
-        "Relé 50 de Neutro"
+    def rele50n(self, pickup):
+        """Relé 50 de Neutro"""
         if (self.__corrente_in[0]) > pickup:
             return True
         else:
@@ -37,11 +37,11 @@ class ReleProtecao(TransformadorCorrente):
                       self.__corrente_ib[0], self.__corrente_ic[0])
         else:
             icc = 0
-        return sobrecorrente_temporizada_IEC(icc, pickup, curva, dial)
+        return sobrecorrente_temporizada_iec(icc, pickup, curva, dial)
 
-    def rele51N(self, pickup, curva, dial):
+    def rele51n(self, pickup, curva, dial):
         icc = self.__corrente_in[0]
-        return sobrecorrente_temporizada_IEC(icc, pickup, curva, dial)
+        return sobrecorrente_temporizada_iec(icc, pickup, curva, dial)
 
 
 class Disjuntor(ReleProtecao):
@@ -51,18 +51,18 @@ class Disjuntor(ReleProtecao):
 
     @property  # Habilita acesso ao estado do disjuntor
     def estado(self):
-        "Abertura e fechamento do disjuntor"
+        """Abertura e fechamento do disjuntor"""
         if self.__estado:
             return "Fechado"
         else:
             return "Aberto"
 
     def abrir(self):
-        "Método de Abertura"
+        """Método de Abertura"""
         self.__estado = False
         return self.__estado
 
     def fechar(self):
-        "Método de Fechamento"
+        """Método de Fechamento"""
         self.__estado = True
         return self.__estado

@@ -2,7 +2,7 @@ from funcoes_complexas import retangular_to_polar, polar_to_retangular
 
 
 def neutro(ia, ib, ic):
-    "Calcula corrente de neutro"
+    """Calcula corrente de neutro"""
     ia_retangular = polar_to_retangular(ia)
     ib_retangular = polar_to_retangular(ib)
     ic_retangular = polar_to_retangular(ic)
@@ -13,7 +13,7 @@ def neutro(ia, ib, ic):
     return ineutro
 
 
-def sobrecorrente_temporizada_IEC(corrente_falta, pickup, curva, dial):
+def sobrecorrente_temporizada_iec(corrente_falta, pickup, curva, dial):
     M = corrente_falta/pickup
     if curva == "SI":
         tempo_disparo = dial*(0.14/((M**0.02)-1))
@@ -26,5 +26,5 @@ def sobrecorrente_temporizada_IEC(corrente_falta, pickup, curva, dial):
         return tempo_disparo
 
 
-def sobrecorrente_temporizada_ANSI(corrente_falta, pickup, curva, dial):
+def sobrecorrente_temporizada_ansi(corrente_falta, pickup, curva, dial):
     pass
