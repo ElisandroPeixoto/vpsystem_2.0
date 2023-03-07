@@ -1,20 +1,30 @@
 from classes import Disjuntor
 
-
-dj = Disjuntor([100, 0], [0, 0], [0, 0])
+# Sequencia de Ações
+dj = Disjuntor([100, 0], [0, 0], [0, 0], estado=True)  # Instanciando um disjuntor
 
 
 def execucao(tempo):
     x = 0
     while x < tempo:
-        elemento1 = dj.rele51(90, "SI", 0.05)
+        # Sequencia de Parametrizacoes
+        disp1 = dj.rele51(90, 'EI', 0.05, x)
+        disp2 = dj.rele50(900)
 
-        if elemento1 is not None:
-            if x >= elemento1:
-                print(f'Tempo: {x}s')
-                break
-            else:
-                x += 0.1667  # Intervalo entre amostras
+        disparo = [disp1, disp2]  # Armazena as funcoes de protecao
+
+        if any(disparo):
+            dj.abrir()
+            print(f'Tempo decorrido: {x}s')
+            print(dj.estado)
+            break
+
+        x += 0.05  # Incremento de tempo
+
+        if x >= tempo:
+            print(f'Tempo decorrido: {x}s')
+            print(dj.estado)
 
 
-execucao(10)
+print('Fim da simulação')
+execucao(20)

@@ -51,22 +51,18 @@ class TestesFuncoes(unittest.TestCase):
 
     # ***************************************
 
-    # Rele 51 Fase
+    # Rele 51
     def test_funcao_51(self):
-        """Tempo de atuacao correto"""
+        """Atuação 51 Fase"""
         dj = Disjuntor([1000, 0], [300, -120], [2, 140])
-        tempo = dj.rele51(100, 'SI', 0.05)
-        if tempo is not None:
-            self.assertAlmostEqual(float(tempo), 0.1485, delta=0.9)
+        disparo = dj.rele51(100, 'SI', 0.05, 1)
+        self.assertTrue(disparo)
 
     def test_funcao_51n(self):
-        """Tempo de atuacao correto de Neutro"""
+        """Atuação 51 Neutro"""
         dj = Disjuntor([1000, 0], [0, 0], [0, 0])
-        tempo = dj.rele51n(100, 'SI', 0.05)
-        if tempo is not None:
-            self.assertAlmostEqual(float(tempo), 0.1485, delta=0.9)
-        else:
-            self.fail()
+        disparo = dj.rele51n(100, 'SI', 0.05, 1)
+        self.assertTrue(disparo)
 
 
 if __name__ == "__main__":

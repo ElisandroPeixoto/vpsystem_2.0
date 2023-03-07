@@ -1,8 +1,6 @@
-def execucao(tempo):
-    x = 0
-    while x < tempo:
-        x += 1
-        print(x)
+from classes import Disjuntor
 
+dj = Disjuntor([100, 0], [0, 0], [0, 0], estado=True)
 
-execucao(50)
+x = dj.rele51(90, 'SI', 0.05, )
+print(x)
